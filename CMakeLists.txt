@@ -44,3 +44,9 @@ install(TARGETS cc cc_static
 )
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+# testing
+include(CTest)
+if (BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
