@@ -13,25 +13,28 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
   ${CMAKE_CURRENT_SOURCE_DIR}/src/std/*.c
 )
-
-# shared library
-add_library(cc SHARED ${SOURCES})
-set_target_properties(cc PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION 0)
-target_include_directories(cc PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
+add_library(cc_objs OBJECT ${SOURCES})
+target_include_directories(cc_objs
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
 )
 
-# static library
-add_library(cc_static STATIC ${SOURCES})
+# shared lib
+add_library(cc SHARED $<TARGET_OBJECTS:cc_objs>)
+set_target_properties(cc PROPERTIES
+  VERSION   ${PROJECT_VERSION}
+  SOVERSION ${PROJECT_VERSION_MAJOR}
+)
+
+# static lib
+add_library(cc_static STATIC $<TARGET_OBJECTS:cc_objs>)
 set_target_properties(cc_static PROPERTIES OUTPUT_NAME cc)
-target_include_directories(cc_static PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
 
 
-# install rules
+# install
 include(GNUInstallDirs)
 install(TARGETS cc cc_static
   EXPORT ccTargets
