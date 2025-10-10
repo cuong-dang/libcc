@@ -1,0 +1,9 @@
+libcc
+
+An implementation of the standard C library, along with classic data
+structures and algorithms.
+
+The goal is to build a deep understanding at a level just above
+assembly, where abstractions meet the hardware. This library will also
+serve as a foundation for other projects built with the guiding
+principle of "only using the code I write."
