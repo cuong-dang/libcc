@@ -3,9 +3,10 @@
 #ifdef NDEBUG
 #define assert(test) ((void)0)
 #else
-void _assert(char *);
-/* (impl) The following _STR and _VAL macros are necessary because __LINE__
- * does not expand to a string literal; it becomes a decimal constant.
+void _assert(const char *);
+/*
+ * The following _STR and _VAL macros are necessary because __LINE__ does
+ * not expand to a string literal; it becomes a decimal constant.
  */
 #define _STR(x) _VAL(x)
 #define _VAL(x) #x
