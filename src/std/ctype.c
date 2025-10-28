@@ -3,7 +3,7 @@
 #define UX (_UP | _XA)
 #define LX (_LO | _XA)
 
-static const short ctype[257] = {
+static const short ascii_[257] = {
     _NT, /* EOF */
     _NT, /* 000 NUL */
     _NT, /* 001 SOH */
@@ -135,4 +135,10 @@ static const short ctype[257] = {
     _NT, /* 127 DEL */
 };
 
-const short *_ctype = &ctype[1];
+static const short *ascii = &ascii_[1];
+
+int isupper(int c) { return ascii[c] & _UP; }
+int islower(int c) { return ascii[c] & _LO; }
+int isalpha(int c) { return ascii[c] & (_UP | _LO); }
+int isdigit(int c) { return ascii[c] & _DI; }
+int isxdigit(int c) { return ascii[c] & (_DI | _XA); }

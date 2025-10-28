@@ -26,18 +26,24 @@
 #define _LO 0x40 /* lowercase */
 #define _XA 0x80 /* hexadecimal alpha */
 
-/* macro implementations */
-extern const short *_ctype;
 /*
- * The order of the macros is based on the helpful graph which shows how
- * the character classification functions relate to each other in Plauger
- * and Brodie, Standard C. The order is roughly from leaves to root.
- *
+ * The macro implementations are omitted. Functionally, macros are
+ * sufficient. However, the standard expects functions. Thus, macros
+ * become performance optimization. Though libcc is a serious and complete
+ * implementation, I find that the performance reason does not justify the
+ * double-implementations.
  */
-#define isupper(c) (_ctype[(c)] & _UP)
-#define islower(c) (_ctype[(c)] & _LO)
-#define isalpha(c) (_ctype[(c)] & (_UP | _LO))
-#define isdigit(c) (_ctype[(c)] & _DI)
-#define isxdigit(c) (_ctype[(c)] & (_DI | _XA))
+
+/*
+ * The order of the definitions is based on the helpful graph which shows
+ * how the character classification functions relate to each other in
+ * Plauger and Brodie, Standard C. The order is roughly from leaves to
+ * root.
+ */
+int isupper(int c);
+int islower(int c);
+int isalpha(int c);
+int isdigit(int c);
+int isxdigit(int c);
 
 #endif
