@@ -36,5 +36,7 @@ int isgraph(int c);
 int isprint(int c);
 int isspace(int c);
 int iscntrl(int c);
+int tolower(int c);
+int toupper(int c);
 
 #endif

@@ -1,7 +1,8 @@
 # binaries
 set(STD_TESTS
   assert
-  ctype
+  ctype_is
+  ctype_tolower
 )
 
 # link & add

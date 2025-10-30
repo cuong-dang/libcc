@@ -17,7 +17,7 @@
 #define UX (UP | XA)
 #define LX (LO | XA)
 
-static const short ascii_[257] = {
+static const short is_tbl_[257] = {
     NT, /* EOF */
     NT, /* 000 NUL */
     NT, /* 001 SOH */
@@ -149,16 +149,16 @@ static const short ascii_[257] = {
     NT, /* 127 DEL */
 };
 
-static const short *ascii = &ascii_[1];
+static const short *is_tbl = &is_tbl_[1];
 
-int isupper(int c) { return ascii[c] & UP; }
-int islower(int c) { return ascii[c] & LO; }
+int isupper(int c) { return is_tbl[c] & UP; }
+int islower(int c) { return is_tbl[c] & LO; }
 int isalpha(int c) { return isupper(c) || islower(c); }
-int isdigit(int c) { return ascii[c] & DI; }
-int isxdigit(int c) { return ascii[c] & (isdigit(c) | XA); }
+int isdigit(int c) { return is_tbl[c] & DI; }
+int isxdigit(int c) { return is_tbl[c] & (isdigit(c) | XA); }
 int isalnum(int c) { return isdigit(c) || isalpha(c); }
-int ispunct(int c) { return ascii[c] & PU; }
+int ispunct(int c) { return is_tbl[c] & PU; }
 int isgraph(int c) { return isalnum(c) || ispunct(c); }
-int isprint(int c) { return isgraph(c) || (ascii[c] & SP); }
-int isspace(int c) { return ascii[c] & (SP | CS); }
-int iscntrl(int c) { return ascii[c] & (CS | BB); }
+int isprint(int c) { return isgraph(c) || (is_tbl[c] & SP); }
+int isspace(int c) { return is_tbl[c] & (SP | CS); }
+int iscntrl(int c) { return is_tbl[c] & (CS | BB); }
