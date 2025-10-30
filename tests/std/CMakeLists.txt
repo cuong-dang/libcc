@@ -3,6 +3,7 @@ set(STD_TESTS
   assert
   ctype_is
   ctype_tolower
+  ctype_toupper
 )
 
 # link & add
