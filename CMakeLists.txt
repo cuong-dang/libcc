@@ -11,7 +11,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # sources
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/std/*.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c
 )
 add_library(cc_objs OBJECT ${SOURCES})
 target_include_directories(cc_objs
@@ -48,5 +48,5 @@ install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 # testing
 include(CTest)
 if (BUILD_TESTING)
-    add_subdirectory(tests)
+  add_subdirectory(tests)
 endif()
