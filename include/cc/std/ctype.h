@@ -11,21 +11,6 @@
  * characters in ASCII code range 0 to 31 are not anything.
  */
 
-/* masks */
-/*
- * The order of the masks is roughly based on their order in the ASCII
- * table.
- */
-#define _NT 0x00 /* not anything */
-#define _BB 0x01 /* BEL & BS */
-#define _CS 0x02 /* control space */
-#define _SP 0x04 /* space */
-#define _PU 0x08 /* punctuation */
-#define _DI 0x10 /* digit */
-#define _UP 0x20 /* uppercase */
-#define _LO 0x40 /* lowercase */
-#define _XA 0x80 /* hexadecimal alpha */
-
 /*
  * The macro implementations are omitted. Functionally, macros are
  * sufficient. However, the standard expects functions. Thus, macros
@@ -45,5 +30,11 @@ int islower(int c);
 int isalpha(int c);
 int isdigit(int c);
 int isxdigit(int c);
+int isalnum(int c);
+int ispunct(int c);
+int isgraph(int c);
+int isprint(int c);
+int isspace(int c);
+int iscntrl(int c);
 
 #endif
