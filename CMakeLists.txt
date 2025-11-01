@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.20)
 project(cc VERSION 0.0.1 LANGUAGES C)
 set(CMAKE_C_STANDARD 90)
 set(CMAKE_C_STANDARD_REQUIRED True)
@@ -13,8 +13,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
   ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c
 )
-add_library(cc_objs OBJECT ${SOURCES})
-target_include_directories(cc_objs
+add_library(objs OBJECT ${SOURCES})
+target_include_directories(objs
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
@@ -23,21 +23,21 @@ target_include_directories(cc_objs
 )
 
 # shared lib
-add_library(cc SHARED $<TARGET_OBJECTS:cc_objs>)
-set_target_properties(cc PROPERTIES
+add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:objs>)
+set_target_properties(${PROJECT_NAME} PROPERTIES
   VERSION   ${PROJECT_VERSION}
   SOVERSION ${PROJECT_VERSION_MAJOR}
 )
 
 # static lib
-add_library(cc_static STATIC $<TARGET_OBJECTS:cc_objs>)
-set_target_properties(cc_static PROPERTIES OUTPUT_NAME cc)
+add_library(${PROJECT_NAME}_static STATIC $<TARGET_OBJECTS:objs>)
+set_target_properties(${PROJECT_NAME}_static PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 
 
 # install
 include(GNUInstallDirs)
-install(TARGETS cc cc_static
-  EXPORT ccTargets
+install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_static
+  EXPORT ${PROJECT_NAME}Targets
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
