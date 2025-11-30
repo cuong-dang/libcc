@@ -5,6 +5,7 @@ set(STD_TESTS
   ctype_tolower
   ctype_toupper
   errno
+  float
 )
 
 # link & add
