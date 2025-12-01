@@ -1,8 +1,25 @@
+# CMake
 cmake_minimum_required(VERSION 3.28)
 project(cc LANGUAGES C)
-set(CMAKE_C_STANDARD 90)
 
-add_library(${PROJECT_NAME})
+# Lib type
+option(CC_SHARED "Enable shared library (dynamic linking)" OFF)
+set(CC_LIB_TYPE STATIC)
+if(CC_SHARED)
+  set(CC_LIB_TYPE SHARED)
+endif()
+
+# Properties
+add_library(${PROJECT_NAME} ${CC_LIB_TYPE})
+target_compile_features(${PROJECT_NAME} PRIVATE c_std_90)
+set_target_properties(
+  ${PROJECT_NAME}
+  PROPERTIES
+  C_STANDARD_REQUIRED ON
+  C_EXTENSIONS OFF
+)
+
+# Sources
 target_sources(${PROJECT_NAME} PRIVATE
   src/std/assert.c
   src/std/ctype_is.c
