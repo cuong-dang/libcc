@@ -3,4 +3,4 @@
 
 #define ARRAY_LEN(a) (sizeof(a) / sizeof((a)[0]))
 
-#endif
+#endif /* TEST_UTILS_H */

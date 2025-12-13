@@ -1,5 +1,5 @@
-#ifndef _CTYPE
-#define _CTYPE
+#ifndef CTYPE_H
+#define CTYPE_H
 
 /*
  * A minimal implementation of ctype.h.
@@ -39,4 +39,4 @@ int iscntrl(int c);
 int tolower(int c);
 int toupper(int c);
 
-#endif
+#endif /* CTYPE_H */
