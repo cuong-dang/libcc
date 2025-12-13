@@ -1,0 +1,63 @@
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "generator": "Ninja"
+    },
+    {
+      "name": "static",
+      "inherits": "base",
+      "cacheVariables": {
+        "CC_SHARED": "OFF"
+      }
+    },
+    {
+      "name": "shared",
+      "inherits": "base",
+      "cacheVariables": {
+        "CC_SHARED": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "static",
+      "configurePreset": "static"
+    },
+    {
+      "name": "shared",
+      "configurePreset": "shared"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "static",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "static"
+        },
+        {
+          "type": "build",
+          "name": "static"
+        }
+      ]
+    },
+    {
+      "name": "shared",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "shared"
+        },
+        {
+          "type": "build",
+          "name": "shared"
+        }
+      ]
+    }
+  ]
+}
