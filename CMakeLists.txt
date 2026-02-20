@@ -1,52 +1,47 @@
-cmake_minimum_required(VERSION 3.20)
-project(cc VERSION 0.0.1 LANGUAGES C)
-set(CMAKE_C_STANDARD 90)
-set(CMAKE_C_STANDARD_REQUIRED True)
-set(CMAKE_C_EXTENSIONS OFF)
+# CMake
+cmake_minimum_required(VERSION 3.28)
+project(cc LANGUAGES C)
 
-# build output
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-# sources
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c
-)
-add_library(objs OBJECT ${SOURCES})
-target_include_directories(objs
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-  PRIVATE
-    ${CMAKE_SOURCE_DIR}/src
-)
-
-# shared lib
-add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:objs>)
-set_target_properties(${PROJECT_NAME} PROPERTIES
-  VERSION   ${PROJECT_VERSION}
-  SOVERSION ${PROJECT_VERSION_MAJOR}
-)
-
-# static lib
-add_library(${PROJECT_NAME}_static STATIC $<TARGET_OBJECTS:objs>)
-set_target_properties(${PROJECT_NAME}_static PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
-
-
-# install
-include(GNUInstallDirs)
-install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_static
-  EXPORT ${PROJECT_NAME}Targets
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
-
-install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
-# testing
-include(CTest)
-if (BUILD_TESTING)
-  add_subdirectory(tests)
+# Lib type
+option(CC_SHARED "Enable shared library (dynamic linking)" OFF)
+set(CC_LIB_TYPE STATIC)
+if(CC_SHARED)
+  set(CC_LIB_TYPE SHARED)
 endif()
+
+# Properties
+add_library(${PROJECT_NAME} ${CC_LIB_TYPE})
+target_compile_features(${PROJECT_NAME} PRIVATE c_std_90)
+set_target_properties(
+  ${PROJECT_NAME}
+  PROPERTIES
+  C_STANDARD_REQUIRED ON
+  C_EXTENSIONS OFF
+  DEBUG_POSTFIX "d"
+)
+
+# Sources
+target_sources(${PROJECT_NAME} PRIVATE
+  src/std/assert.c
+  src/std/ctype_is.c
+  src/std/ctype_tolower.c
+  src/std/ctype_toupper.c
+  src/std/errno.c
+)
+target_include_directories(${PROJECT_NAME} PUBLIC
+  $<BUILD_LOCAL_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+
+# Install
+include(GNUInstallDirs)
+install(
+  TARGETS ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}-config
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(
+  EXPORT ${PROJECT_NAME}-config
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+  NAMESPACE cc::)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/cc
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
